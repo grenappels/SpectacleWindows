@@ -3,22 +3,20 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
+; necessary to handle invisible window borders
+; more info here: https://www.autohotkey.com/boards/viewtopic.php?f=6&t=3392
 #include WinGetPosEx.ahk
 
+; shortcuts
+; ---------
 #!Left::ResizeToggle(False)
-return
 
 #!Right::ResizeToggle(True)
-return
 
 #!f::ResizeFull()
-return
 
-prev_x := 0
-prev_y := 0
-prev_w := 0
-prev_h := 0
-
+; functions
+; ---------
 ResizeWin(x, y, w, h) 
 { 
     WinMove, A,, x, y, w, h 
@@ -37,10 +35,10 @@ ResizeFull()
     }
 }
 
-ResizeToggle(r) {
+ResizeToggle(r) 
+{
     ; get primary monitor info
     SysGet, pi, MonitorPrimary
-    ; SysGet, pm, Monitor, pi
     SysGet, pm, MonitorWorkArea, pi
     ; MsgBox, Left: %pmLeft% Top: %pmTop% Right: %pmRight% Bottom: %pmBottom%
 
@@ -98,7 +96,6 @@ ResizeToggle(r) {
     ; if position is not expected, start with half
     ; then cycle:
     ; half -> two3rd -> one3rd
-    ; if (w != half  && w != two3rd)
     if (!pos_expected || w != half  && w != two3rd)
     {
         WinMove, A,, pos_half, 0, half, pmBottom - off_y * 2
